@@ -1,0 +1,6 @@
+{
+  "name": "AI Recruiter",
+  "description": "Hệ thống AI Recruiter nội bộ doanh nghiệp - Quản lý tuyển dụng, đánh giá ứng viên bằng AI",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

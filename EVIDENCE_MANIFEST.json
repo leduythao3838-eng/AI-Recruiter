@@ -1,0 +1,26 @@
+{
+  "EVIDENCE_MANIFEST_ID": "EVIDENCE-MANIFEST-P0-05-FIX-LOOP",
+  "TEST_RUN_ID": "TEST-RUN-P0-05-20260810-002",
+  "PROJECT_ID": "463e6427-d6d3-4791-a48a-06429e36402b",
+  "ENVIRONMENT": "PREVIEW / AI STUDIO BUILD",
+  "CURRENT_SOURCE_STATE": "NON_GIT_PREVIEW_CONTAINER",
+  "CURRENT_HEAD_SHA": "SOURCE_PROVENANCE_BLOCKER (Not a git repository)",
+  "APPROVED_BLUEPRINT_VERSION": "P0-BLUEPRINT-v1.0-APPROVED-HARDENED",
+  "THREAT_REGISTRY_VERSION": "v1.3",
+  "GOVERNANCE_VERSION": "v1.3",
+  "COLLECTED_AT": "2026-08-10T02:37:00Z",
+  "COLLECTED_BY": "BUILDER_AI",
+  "VERIFICATION_STATUS": "PENDING_CTO_REVERIFICATION",
+  "SOURCE_PROVENANCE_BLOCKER": true,
+  "BLOCKER_DETAILS": "Container environment lacks a .git repository. Real Git SHA cannot be derived via git rev-parse HEAD.",
+  "EVIDENCE_MATRIX": [
+    { "type": "E1_UI", "description": "App Shell, Navigation, 6 Roles Badge, Admin Control Center, Organization CRUD, Dev Test Harness segregation", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E2_DATA", "description": "Cloud Firestore collections: profiles, roles, permissions, role_permissions, user_roles, departments, positions, locations, audit_logs, system_settings, governance_artifacts, privileged_role_change_requests", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E3_AUTHORIZATION", "description": "Deny-by-default Security Rules + Express Token Verification + Role Policy Checks + Maker-Checker Governance + Challenge 3 Atomic Concurrency Lock", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E4_TEST_SPEC", "description": "Adversarial payload tests: Public signup blocked (AC06), Audit log update/delete blocked (AC16/GOV-FIND-007), SYSTEM_ADMIN TOCTOU atomic lock (Challenge 3)", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E5_BUILD", "description": "Full-stack Vite + Express compilation succeeded cleanly", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E6_VERSION", "description": "186 ACs and 31 Threats mapped in governance/REGISTRY_COVERAGE_MANIFEST.md (GOV-FIND-002)", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E9_SECURITY", "description": "Secret scan clean, No frontend API key leak, Private storage signed token TTL 15m with generic secure assets semantics (GOV-FIND-005/006)", "status": "REMEDIATED_VERIFIED" },
+    { "type": "E14_MANIFEST", "description": "Independent evidence package prepared with explicit provenance blocker declaration (GOV-FIND-001/008)", "status": "REMEDIATED_VERIFIED" }
+  ]
+}

@@ -1,0 +1,90 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data;
+    }
+
+    // Default catch-all: DENY ALL
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User Profiles
+    match /profiles/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isOwner(userId) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'created_at']);
+      allow delete: if false;
+    }
+
+    // Canonical Roles (Read-only for client, server-mutated)
+    match /roles/{roleKey} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Permissions (Read-only for client, server-mutated)
+    match /permissions/{permissionKey} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Role Permissions (Read-only for client)
+    match /role_permissions/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // User Roles assignment (Read-only for client; all mutations via server API)
+    match /user_roles/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Organization: Departments, Positions, Locations (Client read-only; server handles writes)
+    match /departments/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /positions/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /locations/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Audit Logs (Client read with authorization; APPEND-ONLY via server, client write/update/delete DENIED)
+    match /audit_logs/{id} {
+      allow read: if isSignedIn();
+      allow write, create, update, delete: if false;
+    }
+
+    // System Settings (Client read; server-mutated)
+    match /system_settings/{key} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Governance Artifacts (Client read; server-mutated)
+    match /governance_artifacts/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+  }
+}

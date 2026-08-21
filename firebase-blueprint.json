@@ -1,0 +1,214 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "UserProfile",
+      "description": "Thông tin người dùng nội bộ hệ thống AI Recruiter",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "display_name": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["ACTIVE", "DISABLED"] },
+        "department_id": { "type": "string" },
+        "position_id": { "type": "string" },
+        "location_id": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["uid", "email", "display_name", "status", "created_at", "updated_at"]
+    },
+    "Role": {
+      "title": "Role",
+      "description": "Danh mục 6 vai trò chuẩn trong hệ thống",
+      "type": "object",
+      "properties": {
+        "role_key": { "type": "string", "enum": ["SYSTEM_ADMIN", "HR_ADMIN", "RECRUITER", "HIRING_MANAGER", "INTERVIEWER", "VIEWER"] },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "is_system": { "type": "boolean" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["role_key", "display_name", "is_system", "active"]
+    },
+    "Permission": {
+      "title": "Permission",
+      "description": "Quyền chi tiết cấu thành RBAC Matrix",
+      "type": "object",
+      "properties": {
+        "permission_key": { "type": "string" },
+        "module": { "type": "string" },
+        "action": { "type": "string" },
+        "description": { "type": "string" },
+        "criticality": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] }
+      },
+      "required": ["permission_key", "module", "action", "criticality"]
+    },
+    "RolePermission": {
+      "title": "RolePermission",
+      "description": "Ánh xạ vai trò và quyền hạn",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "role_key": { "type": "string" },
+        "permission_key": { "type": "string" },
+        "granted": { "type": "boolean" },
+        "updated_at": { "type": "string" },
+        "updated_by": { "type": "string" }
+      },
+      "required": ["id", "role_key", "permission_key", "granted"]
+    },
+    "UserRole": {
+      "title": "UserRole",
+      "description": "Gán vai trò cho người dùng với governance metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "role_key": { "type": "string" },
+        "active": { "type": "boolean" },
+        "assigned_by": { "type": "string" },
+        "assigned_at": { "type": "string" },
+        "reason": { "type": "string" },
+        "reviewed_by": { "type": "string" },
+        "reviewed_at": { "type": "string" }
+      },
+      "required": ["id", "user_id", "role_key", "active", "assigned_by", "assigned_at"]
+    },
+    "Department": {
+      "title": "Department",
+      "description": "Sơ đồ phòng ban doanh nghiệp",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "active": { "type": "boolean" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "code", "name", "active"]
+    },
+    "Position": {
+      "title": "Position",
+      "description": "Chức danh tổ chức (không phải job tin tuyển dụng)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "active": { "type": "boolean" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "code", "name", "active"]
+    },
+    "Location": {
+      "title": "Location",
+      "description": "Địa điểm / văn phòng làm việc",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "active": { "type": "boolean" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "code", "name", "active"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Nhật ký kiểm toán append-only ghi nhận mọi thao tác hệ thống",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "event_id": { "type": "string" },
+        "actor_uid": { "type": "string" },
+        "actor_roles_snapshot": { "type": "string" },
+        "action": { "type": "string" },
+        "entity_type": { "type": "string" },
+        "entity_id": { "type": "string" },
+        "reason": { "type": "string" },
+        "created_at": { "type": "string" },
+        "source": { "type": "string" },
+        "environment": { "type": "string" }
+      },
+      "required": ["id", "event_id", "actor_uid", "action", "entity_type", "created_at"]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Cấu hình tham số hệ thống",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "value": { "type": "string" },
+        "data_type": { "type": "string" },
+        "category": { "type": "string" },
+        "updated_at": { "type": "string" },
+        "updated_by": { "type": "string" }
+      },
+      "required": ["key", "value", "category"]
+    },
+    "GovernanceArtifact": {
+      "title": "GovernanceArtifact",
+      "description": "Hồ sơ tuân thủ và phiên bản blueprint",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "artifact_type": { "type": "string" },
+        "version": { "type": "string" },
+        "status": { "type": "string" },
+        "content_or_reference": { "type": "string" },
+        "created_at": { "type": "string" },
+        "created_by": { "type": "string" }
+      },
+      "required": ["id", "artifact_type", "version", "status"]
+    }
+  },
+  "firestore": {
+    "/profiles/{uid}": {
+      "schema": { "$ref": "#/entities/Profile" },
+      "description": "Hồ sơ cá nhân người dùng"
+    },
+    "/roles/{roleKey}": {
+      "schema": { "$ref": "#/entities/Role" },
+      "description": "Danh mục 6 vai trò chuẩn"
+    },
+    "/permissions/{permissionKey}": {
+      "schema": { "$ref": "#/entities/Permission" },
+      "description": "Quyền hạn chi tiết"
+    },
+    "/role_permissions/{id}": {
+      "schema": { "$ref": "#/entities/RolePermission" },
+      "description": "Phân quyền theo vai trò"
+    },
+    "/user_roles/{id}": {
+      "schema": { "$ref": "#/entities/UserRole" },
+      "description": "Gán vai trò cho người dùng"
+    },
+    "/departments/{id}": {
+      "schema": { "$ref": "#/entities/Department" },
+      "description": "Sơ đồ phòng ban"
+    },
+    "/positions/{id}": {
+      "schema": { "$ref": "#/entities/Position" },
+      "description": "Danh mục chức danh"
+    },
+    "/locations/{id}": {
+      "schema": { "$ref": "#/entities/Location" },
+      "description": "Danh mục địa điểm"
+    },
+    "/audit_logs/{id}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Nhật ký kiểm toán hệ thống"
+    },
+    "/system_settings/{key}": {
+      "schema": { "$ref": "#/entities/SystemSetting" },
+      "description": "Cấu hình hệ thống"
+    },
+    "/governance_artifacts/{id}": {
+      "schema": { "$ref": "#/entities/GovernanceArtifact" },
+      "description": "Hồ sơ quản trị hệ thống"
+    }
+  }
+}
